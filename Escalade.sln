@@ -17,6 +17,16 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Web.Public", "src\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Persistence", "src\Escalade.Persistence\Escalade.Persistence.kproj", "{00F93F7C-ED51-40FE-A03F-395EEE10DC3C}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Persistence.Mock", "src\Escalade.Persistence.Mock\Escalade.Persistence.Mock.kproj", "{E02D7375-A99C-4ECD-AB92-21239E4EC892}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Domain", "src\Escalade.Domain\Escalade.Domain.kproj", "{3BD11818-0794-4780-BF06-26F04E175F10}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Application", "src\Escalade.Application\Escalade.Application.kproj", "{B8189666-B98C-4514-8CC2-BE88603FA4A2}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Application.Services", "src\Escalade.Application.Services\Escalade.Application.Services.kproj", "{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Escalade.Domain.Services", "src\Escalade.Domain.Services\Escalade.Domain.Services.kproj", "{76405A5D-82DF-473B-B48D-EC2B59D5D7B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +41,26 @@ Global
 		{00F93F7C-ED51-40FE-A03F-395EEE10DC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00F93F7C-ED51-40FE-A03F-395EEE10DC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00F93F7C-ED51-40FE-A03F-395EEE10DC3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E02D7375-A99C-4ECD-AB92-21239E4EC892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02D7375-A99C-4ECD-AB92-21239E4EC892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02D7375-A99C-4ECD-AB92-21239E4EC892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02D7375-A99C-4ECD-AB92-21239E4EC892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD11818-0794-4780-BF06-26F04E175F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD11818-0794-4780-BF06-26F04E175F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD11818-0794-4780-BF06-26F04E175F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD11818-0794-4780-BF06-26F04E175F10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8189666-B98C-4514-8CC2-BE88603FA4A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8189666-B98C-4514-8CC2-BE88603FA4A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8189666-B98C-4514-8CC2-BE88603FA4A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8189666-B98C-4514-8CC2-BE88603FA4A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76405A5D-82DF-473B-B48D-EC2B59D5D7B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76405A5D-82DF-473B-B48D-EC2B59D5D7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76405A5D-82DF-473B-B48D-EC2B59D5D7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76405A5D-82DF-473B-B48D-EC2B59D5D7B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +68,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{884BE62D-A567-44A1-8A73-1C122FE94FF1} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
 		{00F93F7C-ED51-40FE-A03F-395EEE10DC3C} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
+		{E02D7375-A99C-4ECD-AB92-21239E4EC892} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
+		{3BD11818-0794-4780-BF06-26F04E175F10} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
+		{B8189666-B98C-4514-8CC2-BE88603FA4A2} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
+		{E3CBFCB2-A529-47BE-B275-C21EB6D12E3B} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
+		{76405A5D-82DF-473B-B48D-EC2B59D5D7B1} = {C1AEF307-DEDB-44D9-8BEB-B0B9BA2D5247}
 	EndGlobalSection
 EndGlobal

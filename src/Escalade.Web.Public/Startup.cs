@@ -1,4 +1,5 @@
-﻿using Escalade.Persistence;
+﻿using Escalade.Domain.Persistence;
+using Escalade.Persistence.Mock;
 using Microsoft.AspNet.Builder;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -12,6 +13,7 @@ namespace Escalade.Web.Public
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -30,8 +32,6 @@ namespace Escalade.Web.Public
         public void ConfigureDevelopment(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-            // mock data repositories
-            //     services.AddTransient<object, object>();
         }
     }
 }
