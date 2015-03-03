@@ -13,8 +13,8 @@ namespace Escalade.Web.Public.Controllers
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
-            if (userManager == null) { throw new ArgumentNullException("userManager"); }
-            if (signInManager == null { throw new ArgumentNullException("signInManager"); }
+            if (userManager == null) { throw new ArgumentNullException(nameof(userManager)); }
+            if (signInManager == null) { throw new ArgumentNullException(nameof(signInManager)); }
 
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -89,9 +89,9 @@ namespace Escalade.Web.Public.Controllers
         /// <param name="result">The result of an identity operation.</param>
         private void AddErrors(IdentityResult result)
         {
-            foreach(string error in result.Errors)
+            foreach(var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error);
+                ModelState.AddModelError(string.Empty, error.Description);
             }
         }
     }

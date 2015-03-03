@@ -1,6 +1,9 @@
 ﻿using Escalade.Domain.Persistence;
 using Escalade.Persistence.Mock;
+using Escalade.Web.Public.Identity;
+using Escalade.Web.Public.Models;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Identity;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
@@ -13,11 +16,15 @@ namespace Escalade.Web.Public
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services
+                .AddIdentity<ApplicationUser, IdentityRole>()
+                .AddUserStore<UserStore>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole();
             app.UseStaticFiles();
             app.UseIdentity();
             app.UseMvc(routes =>
@@ -27,11 +34,6 @@ namespace Escalade.Web.Public
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "Home", action = "Index" });
             });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder app, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole();
         }
     }
 }

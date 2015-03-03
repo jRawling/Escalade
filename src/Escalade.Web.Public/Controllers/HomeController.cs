@@ -5,7 +5,6 @@ namespace Escalade.Web.Public.Controllers
 {
     public class HomeController : BaseController
     {
-        [Route("/")]
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Index()
