@@ -1,4 +1,4 @@
-﻿{
+{
 	"webroot": "wwwroot",
 	"version": "1.0.0-*",
 	"dependencies": {
@@ -10,8 +10,9 @@
 		"Microsoft.Framework.Logging": "1.0.0-beta3",
 		"Microsoft.Framework.Logging.Console": "1.0.0-beta3",
 		"Escalade.Persistence": "1.0.0-*",
-		"Escalade.Domain": "1.0.0-*", 
-		"Escalade.Persistence.Mock": "1.0.0-*"
+		"Escalade.Domain": "1.0.0-*",
+		"Escalade.Persistence.Mock": "1.0.0-*", 
+		"Microsoft.AspNet.Diagnostics": "1.0.0-beta3"
 	},
 	"frameworks": {
 		"aspnet50": { },

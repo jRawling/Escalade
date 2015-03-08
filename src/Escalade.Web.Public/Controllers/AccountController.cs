@@ -18,6 +18,20 @@ namespace Escalade.Web.Public.Controllers
 
             this.userManager = userManager;
             this.signInManager = signInManager;
+
+            SetPasswordOptions();
+        }
+
+        /// <summary>
+        /// Set options for password validation.
+        /// </summary>
+        private void SetPasswordOptions()
+        {
+            userManager.Options.Password.RequiredLength = 6;
+            userManager.Options.Password.RequireDigit = false;
+            userManager.Options.Password.RequireLowercase = false;
+            userManager.Options.Password.RequireNonLetterOrDigit = false;
+            userManager.Options.Password.RequireUppercase = false;
         }
 
         [Route("register")]
@@ -25,7 +39,7 @@ namespace Escalade.Web.Public.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            throw new NotSupportedException();
+            return View();
         }
 
         [Route("register")]
@@ -36,8 +50,9 @@ namespace Escalade.Web.Public.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser(model.UserName);
+                ApplicationUser user = new ApplicationUser(model.Username);
                 var result = await userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);
@@ -49,7 +64,7 @@ namespace Escalade.Web.Public.Controllers
                 }
             }
 
-            throw new NotSupportedException();
+            return View(model);
         }
 
         [Route("login")]
@@ -89,7 +104,7 @@ namespace Escalade.Web.Public.Controllers
         /// <param name="result">The result of an identity operation.</param>
         private void AddErrors(IdentityResult result)
         {
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
