@@ -1,96 +1,98 @@
-﻿using Escalade.Web.Public.Models;
+﻿using Escalade.Domain.Model;
+using Escalade.Domain.Persistence;
+using Escalade.Web.Public.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Escalade.Web.Public.Identity
-{
-    public class UserStore : UserStore<ApplicationUser>
-    {
-        public UserStore(IdentityErrorDescriber describer = null) : base(describer) { }
-    }
+{ 
+    public class UserStore :
+        IUserPasswordStore<ApplicationUser>,
+        IUserSecurityStampStore<ApplicationUser>,
+        IUserEmailStore<ApplicationUser>,
+        IUserStore<ApplicationUser>
+        // IUserRoleStore<TUser>,
+        //  IUserClaimStore<TUser>,
+        //  IUserLockoutStore<TUser>,
+        //  IUserPhoneNumberStore<TUser>,
+        //  IQueryableUserStore<TUser>,
+        //  IUserTwoFactorStore<TUser>,
+        //  IUserLoginStore<TUser> -- for facebook login, etc
 
-    public class UserStore<TUser> : UserStore<TUser, IdentityRole<Guid>>
-        where TUser : IdentityUser<Guid>, new()
     {
-        public UserStore(IdentityErrorDescriber describer = null) : base(describer) { }
-    }
-
-    public class UserStore<TUser, TRole> : UserStore<TUser, TRole, Guid>
-        where TUser : IdentityUser<Guid>, new()
-        where TRole : IdentityRole<Guid>, new()
-    {
-        public UserStore(IdentityErrorDescriber describer = null) : base(describer)
-        { }
-    }
-
-    public class UserStore<TUser, TRole, TKey> 
-        //IUserLoginStore<TUser>, -- for facebook login, etc
-     //   IUserRoleStore<TUser>,
-      //  IUserClaimStore<TUser>,
-      //  IUserPasswordStore<TUser>,
-      //  IUserSecurityStampStore<TUser>,
-      //  IUserEmailStore<TUser>,
-      //  IUserLockoutStore<TUser>,
-      //  IUserPhoneNumberStore<TUser>,
-      //  IQueryableUserStore<TUser>,
-      //  IUserTwoFactorStore<TUser>
-        where TUser : IdentityUser<TKey>
-        where TRole : IdentityRole<TKey>
-        where TKey : IEquatable<TKey>
-    {
-        public UserStore(IdentityErrorDescriber describer = null)
+        public UserStore(IUserRepository userRepository, IdentityErrorDescriber describer = null)
         {
+            if(userRepository == null) { throw new ArgumentNullException(nameof(userRepository)); }
+            this.userRepository = userRepository;
             ErrorDescriber = describer ?? new IdentityErrorDescriber();
         }
 
-        private bool isDisposed;
+        private bool isDisposed = false;
+        private readonly IUserRepository userRepository;
 
         public IdentityErrorDescriber ErrorDescriber { get; set; }
 
-        public virtual string ConvertIdToString(TKey id)
+        private string ConvertIdToString(Guid id)
         {
-            if (id.Equals(default(TKey)))
+            if (id.Equals(default(Guid)))
             {
                 return null;
             }
             return id.ToString();
         }
 
-        public virtual TKey ConvertIdFromString(string id)
+        private Guid ConvertIdFromString(string id)
         {
             if (id == null)
             {
-                return default(TKey);
+                return default(Guid);
             }
-            return (TKey)Convert.ChangeType(id, typeof(TKey));
+            return (Guid)Convert.ChangeType(id, typeof(Guid));
         }
 
         #region IUserStore
 
-        public Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
 
-        public Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
 
-        public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            User user = await userRepository.FindByIdAsync(ConvertIdFromString(userId), cancellationToken);
+
+            if (user != null)
+            {
+                return new ApplicationUser(user);
+            }
+
+            return null;
         }
 
-        public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            User user = await userRepository.FindByNameAsync(normalizedUserName, cancellationToken);
+
+            if(user != null)
+            {
+                return new ApplicationUser(user);
+            }
+
+            return null;
         }
 
-        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -98,7 +100,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(user.NormalizedUserName);
         }
 
-        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -106,7 +108,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(ConvertIdToString(user.Id));
         }
 
-        public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -114,7 +116,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(user.UserName);
         }
 
-        public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -123,7 +125,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(0);
         }
 
-        public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -132,7 +134,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(0);
         }
 
-        public Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
@@ -150,7 +152,7 @@ namespace Escalade.Web.Public.Identity
             }
         }
 
-        private static void ThrowIfUserNull(TUser user)
+        private static void ThrowIfUserNull(ApplicationUser user)
         {
             if (user == null)
             {
@@ -162,7 +164,7 @@ namespace Escalade.Web.Public.Identity
 
         #region IUserPasswordStore
 
-        public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -171,7 +173,7 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(0);
         }
 
-        public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
@@ -179,12 +181,105 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(user.PasswordHash);
         }
 
-        public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.PasswordHash != null);
         }
 
         #endregion IUserPasswordStore
+
+        #region IUserEmailStore
+
+        public Task SetEmailAsync(ApplicationUser user, string email, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            user.Email = email;
+            return Task.FromResult(0);
+        }
+
+        public Task<string> GetEmailAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            return Task.FromResult(user.Email);
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            return Task.FromResult(user.EmailConfirmed);
+        }
+
+        public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            user.EmailConfirmed = confirmed;
+            return Task.FromResult(0);
+        }
+
+        public Task<ApplicationUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            /*
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            var userLogin = await
+                UserLogins.FirstOrDefaultAsync(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey, cancellationToken);
+            if (userLogin != null)
+            {
+                return await Users.FirstOrDefaultAsync(u => u.Id.Equals(userLogin.UserId), cancellationToken);
+            }
+            return null;
+            */
+
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            return Task.FromResult(user.NormalizedEmail);
+        }
+
+        public Task SetNormalizedEmailAsync(ApplicationUser user, string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            user.NormalizedEmail = normalizedEmail;
+            return Task.FromResult(0);
+        }
+
+        #endregion IUserEmailStore
+
+        #region IUserSecurityStampStore
+
+        public Task SetSecurityStampAsync(ApplicationUser user, string stamp, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            user.SecurityStamp = stamp;
+            return Task.FromResult(0);
+        }
+
+        public Task<string> GetSecurityStampAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            return Task.FromResult(user.SecurityStamp);
+        }
+
+        #endregion IUserSecurityStampStore
     }
 }

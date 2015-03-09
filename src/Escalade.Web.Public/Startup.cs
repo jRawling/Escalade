@@ -27,8 +27,9 @@ namespace Escalade.Web.Public
         {
             services.AddMvc();
             services
-                .AddIdentity<IdentityUser<Guid>, IdentityRole>()
-                .AddUserStore<UserStore>();
+                .AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+                .AddUserStore<UserStore>()
+                .AddRoleStore<RoleStore>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
 

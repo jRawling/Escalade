@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Escalade.Domain.Model;
+using Microsoft.AspNet.Identity;
 using System;
 
 namespace Escalade.Web.Public.Models
@@ -7,7 +8,11 @@ namespace Escalade.Web.Public.Models
     {
 
         public ApplicationUser()
+        {  }
+
+        public ApplicationUser(User user) : base(user.UserName)
         {
+
         }
 
         public ApplicationUser(string userName) : base(userName)

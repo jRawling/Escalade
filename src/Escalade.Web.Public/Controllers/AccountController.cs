@@ -15,10 +15,8 @@ namespace Escalade.Web.Public.Controllers
         {
             if (userManager == null) { throw new ArgumentNullException(nameof(userManager)); }
             if (signInManager == null) { throw new ArgumentNullException(nameof(signInManager)); }
-
             this.userManager = userManager;
             this.signInManager = signInManager;
-
             SetPasswordOptions();
         }
 
@@ -26,7 +24,7 @@ namespace Escalade.Web.Public.Controllers
         /// Set options for password validation.
         /// </summary>
         private void SetPasswordOptions()
-        {
+        { 
             userManager.Options.Password.RequiredLength = 6;
             userManager.Options.Password.RequireDigit = false;
             userManager.Options.Password.RequireLowercase = false;
