@@ -7,7 +7,8 @@ namespace Escalade.Domain.Persistence
 {
     public interface IUserRepository
     {
-        Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken);
+        Task<User> FindByNameAsync(string normalisedUserName, CancellationToken cancellationToken);
         Task<User> FindByIdAsync(Guid userId, CancellationToken cancellationToken);
+        Task<User> FindByEmailAsync(string normalisedEmail, CancellationToken cancellationToken);
     }
 }

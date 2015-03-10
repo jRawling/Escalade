@@ -10,9 +10,11 @@ namespace Escalade.Web.Public.Models
         public ApplicationUser()
         {  }
 
-        public ApplicationUser(User user) : base(user.UserName)
+        public ApplicationUser(User user) : base(user.Username)
         {
-
+            Email = user.Email;
+            EmailConfirmed = user.EmailConfirmed;
+            Id = user.Id;
         }
 
         public ApplicationUser(string userName) : base(userName)

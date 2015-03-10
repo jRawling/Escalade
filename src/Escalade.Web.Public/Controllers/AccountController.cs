@@ -18,6 +18,7 @@ namespace Escalade.Web.Public.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             SetPasswordOptions();
+            SetUserOptions();
         }
 
         /// <summary>
@@ -30,6 +31,11 @@ namespace Escalade.Web.Public.Controllers
             userManager.Options.Password.RequireLowercase = false;
             userManager.Options.Password.RequireNonLetterOrDigit = false;
             userManager.Options.Password.RequireUppercase = false;
+        }
+
+        private void SetUserOptions()
+        {
+            userManager.Options.User.RequireUniqueEmail = true;
         }
 
         [Route("register")]
@@ -48,9 +54,8 @@ namespace Escalade.Web.Public.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser(model.Username);
-                var result = await userManager.CreateAsync(user, model.Password);
-
+                ApplicationUser user = model.CreateUser();
+                var result = await userManager.CreateAsync(user, model.Password, Context.RequestAborted);
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);

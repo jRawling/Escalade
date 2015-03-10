@@ -52,11 +52,25 @@ namespace Escalade.Web.Public.Identity
             return (Guid)Convert.ChangeType(id, typeof(Guid));
         }
 
+        private ApplicationUser CreateApplicationUser(User user)
+        {
+            if (user != null)
+            {
+                return new ApplicationUser(user);
+            }
+
+            return null;
+        }
+
         #region IUserStore
 
-        public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            ThrowIfUserNull(user);
+            // add user to persistence
+            return IdentityResult.Success;
         }
 
         public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
@@ -69,13 +83,7 @@ namespace Escalade.Web.Public.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             User user = await userRepository.FindByIdAsync(ConvertIdFromString(userId), cancellationToken);
-
-            if (user != null)
-            {
-                return new ApplicationUser(user);
-            }
-
-            return null;
+            return CreateApplicationUser(user);
         }
 
         public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
@@ -83,13 +91,7 @@ namespace Escalade.Web.Public.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             User user = await userRepository.FindByNameAsync(normalizedUserName, cancellationToken);
-
-            if(user != null)
-            {
-                return new ApplicationUser(user);
-            }
-
-            return null;
+            return CreateApplicationUser(user);
         }
 
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
@@ -225,21 +227,12 @@ namespace Escalade.Web.Public.Identity
             return Task.FromResult(0);
         }
 
-        public Task<ApplicationUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ApplicationUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            /*
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            var userLogin = await
-                UserLogins.FirstOrDefaultAsync(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey, cancellationToken);
-            if (userLogin != null)
-            {
-                return await Users.FirstOrDefaultAsync(u => u.Id.Equals(userLogin.UserId), cancellationToken);
-            }
-            return null;
-            */
-
-            throw new NotImplementedException();
+            User user = await userRepository.FindByEmailAsync(normalizedEmail, cancellationToken);
+            return CreateApplicationUser(user);
         }
 
         public Task<string> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))

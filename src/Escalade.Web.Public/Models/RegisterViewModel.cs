@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Escalade.Web.Public.Models
 {
@@ -35,5 +36,10 @@ namespace Escalade.Web.Public.Models
         [Required]
         [Display(Name = "Location")]
         public string Location { get; set; }
+
+        internal ApplicationUser CreateUser()
+        {
+            return new ApplicationUser(Username) { Email = EmailAddress };
+        }
     }
 }
