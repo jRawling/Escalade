@@ -43,7 +43,7 @@ namespace Escalade.Web.Public.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel());
         }
 
         [Route("register")]

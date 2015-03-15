@@ -1,39 +1,85 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿fieldset{
+    padding: 5px 0;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #e6e6e6;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
-
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+.content {
+    padding: 24px 16px;
 }
 
-
-/* CAROUSEL
--------------------------------------------------- */
-
-.carousel-caption {
-    z-index: 10 !important;
+.box .content {
+    background-color: #FFFFFF;
 }
 
-    .carousel-caption p {
-        font-size: 20px;
-        line-height: 1.4;
+#create-account {
+    width: 100%;
+    background-color: aliceblue;
+    text-align: center;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+#create-account .logo{
+    font-size: 26px;
+    font-weight: 600;
+}
+
+    #create-account .box {
+        display: block !important;
+        text-align: left;
+        width: 100%;
+        margin: 0 auto 0 -300px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        max-width: 600px;
     }
 
-@media (min-width: 768px) {
-
-    .carousel-caption {
-        z-index: 10 !important;
+    #create-account .profile{
+        margin-top: 20px;
     }
+
+
+    #create-account input[type=submit] {
+        width: 280px;
+    }
+
+.validation-summary-errors {
+    background-color: #FF9494;
+    color: #FFF;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 4px;
+    padding: 6px;
+    border-color: #ff6464;
+}
+
+.validation-summary-errors ul {
+        list-style-type: none;
+}
+
+.validation-summary-valid {
+    display: none;
 }

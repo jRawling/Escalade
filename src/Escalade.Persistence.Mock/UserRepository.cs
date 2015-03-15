@@ -34,37 +34,22 @@ namespace Escalade.Persistence.Mock
             users.Add(user1);
         }
 
-        private User CreateUser(Dto.User user)
-        {
-            if(user != null)
-            {
-                return new User(user);
-            }
-
-            return null;
-        }
-
-        private string Normalise(string field)
-        {
-            return field.ToLowerInvariant();
-        }
-
         public Task<User> FindByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             Dto.User user = users.Where(u => u.Id == userId).FirstOrDefault();
-            return Task.FromResult(CreateUser(user));
+            return Task.FromResult(ModelFactory.CreateUser(user));
         }
 
-        public Task<User> FindByNameAsync(string username, CancellationToken cancellationToken)
+        public Task<User> FindByNameAsync(string normalisedUsername, CancellationToken cancellationToken)
         {
-            Dto.User user = users.Where(u => u.NormalisedUsername.Equals(Normalise(username))).FirstOrDefault();
-            return Task.FromResult(CreateUser(user));
+            Dto.User user = users.Where(u => u.NormalisedUsername.Equals(normalisedUsername)).FirstOrDefault();
+            return Task.FromResult(ModelFactory.CreateUser(user));
         }
 
-        public Task<User> FindByEmailAsync(string email, CancellationToken cancellationToken)
+        public Task<User> FindByEmailAsync(string normalisedEmail, CancellationToken cancellationToken)
         {
-            Dto.User user = users.Where(u => u.NormalisedEmail.Equals(Normalise(email))).FirstOrDefault();
-            return Task.FromResult(CreateUser(user));
+            Dto.User user = users.Where(u => u.NormalisedEmail.Equals(normalisedEmail)).FirstOrDefault();
+            return Task.FromResult(ModelFactory.CreateUser(user));
         }
     }
 }
