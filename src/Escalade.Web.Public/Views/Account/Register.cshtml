@@ -1,14 +1,5 @@
 ﻿@model Escalade.Web.Public.Models.RegisterViewModel
 
-@{
-    string usernamePlaceHolder = Html.DisplayNameFor(m => m.Username);
-    string emailPlaceHolder = Html.DisplayNameFor(m => m.EmailAddress);
-    string firstNamePlaceHolder = Html.DisplayNameFor(m => m.FirstName);
-    string lastNamePlaceHolder = Html.DisplayNameFor(m => m.LastName);
-    string passwordPlaceHolder = Html.DisplayNameFor(m => m.Password);
-    string confirmPasswordPlaceHolder = Html.DisplayNameFor(m => m.ConfirmPassword);
-}
-
 @section Scripts {
     <script src="@Url.Content("~/lib/jquery-validation/jquery.validate.js")"></script>
     <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
@@ -32,7 +23,7 @@
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-user"></span>
                                     </div>
-                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = usernamePlaceHolder })
+                                    @Html.TextBoxFor(m => m.User.Username, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.Username) })
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -40,7 +31,7 @@
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-envelope"></span>
                                     </div>
-                                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = emailPlaceHolder })
+                                    @Html.TextBoxFor(m => m.User.EmailAddress, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.EmailAddress) })
                                 </div>
                             </div>
                         </div>
@@ -50,7 +41,7 @@
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-lock"></span>
                                     </div>
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = passwordPlaceHolder })
+                                    @Html.PasswordFor(m => m.User.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.Password) })
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -58,7 +49,7 @@
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-lock"></span>
                                     </div>
-                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = confirmPasswordPlaceHolder })
+                                    @Html.PasswordFor(m => m.User.ConfirmPassword, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.ConfirmPassword) })
                                 </div>
                             </div>
                         </div>
@@ -66,18 +57,18 @@
                     <div class="profile">
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = firstNamePlaceHolder })
+                                @Html.TextBoxFor(m => m.User.FirstName, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.FirstName) })
                             </div>
                             <div class="form-group col-sm-6">
-                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = lastNamePlaceHolder })
+                                @Html.TextBoxFor(m => m.User.LastName, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.LastName) })
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                @Html.DropDownListFor(m => m.SelectedCountry, Model.Countries, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.User.SelectedCountry, Model.Countries, new { @class = "form-control" })
                             </div>
                             <div class="form-group col-sm-6">
-                                @Html.DropDownListFor(m => m.SelectedGender, Model.Genders, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.User.SelectedGender, Model.Genders, new { @class = "form-control" })
                             </div>
                         </div>
                     </div>

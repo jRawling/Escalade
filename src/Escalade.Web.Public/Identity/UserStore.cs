@@ -1,5 +1,5 @@
-﻿using Escalade.Domain.Model;
-using Escalade.Domain.Persistence;
+﻿using Escalade.Application.UserSession;
+using Escalade.Application.UserSession.Dto;
 using Escalade.Web.Public.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -22,15 +22,15 @@ namespace Escalade.Web.Public.Identity
         //  IUserLoginStore<TUser> -- for facebook login, etc
 
     {
-        public UserStore(IUserRepository userRepository, IdentityErrorDescriber describer = null)
+        public UserStore(IUserSession userSession, IdentityErrorDescriber describer = null)
         {
-            if(userRepository == null) { throw new ArgumentNullException(nameof(userRepository)); }
-            this.userRepository = userRepository;
+            if(userSession == null) { throw new ArgumentNullException(nameof(userSession)); }
+            this.userSession = userSession;
             ErrorDescriber = describer ?? new IdentityErrorDescriber();
         }
 
         private bool isDisposed = false;
-        private readonly IUserRepository userRepository;
+        private readonly IUserSession userSession;
 
         public IdentityErrorDescriber ErrorDescriber { get; set; }
 
@@ -69,7 +69,7 @@ namespace Escalade.Web.Public.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             ThrowIfUserNull(user);
-            // add user to persistence
+            userSession.CreateAsync(user.MapToDto());
             return IdentityResult.Success;
         }
 
@@ -82,7 +82,7 @@ namespace Escalade.Web.Public.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userRepository.FindByIdAsync(ConvertIdFromString(userId), cancellationToken);
+            User user = await userSession.FindByIdAsync(ConvertIdFromString(userId));
             return CreateApplicationUser(user);
         }
 
@@ -90,7 +90,7 @@ namespace Escalade.Web.Public.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userRepository.FindByNameAsync(normalizedUserName, cancellationToken);
+            User user = await userSession.FindByNameAsync(normalizedUserName);
             return CreateApplicationUser(user);
         }
 
@@ -231,7 +231,7 @@ namespace Escalade.Web.Public.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userRepository.FindByEmailAsync(normalizedEmail, cancellationToken);
+            User user = await userSession.FindByEmailAsync(normalizedEmail);
             return CreateApplicationUser(user);
         }
 

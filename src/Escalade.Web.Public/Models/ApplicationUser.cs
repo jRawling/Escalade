@@ -1,4 +1,4 @@
-﻿using Escalade.Domain.Model;
+﻿using Escalade.Application.UserSession.Dto;
 using Microsoft.AspNet.Identity;
 using System;
 
@@ -19,6 +19,22 @@ namespace Escalade.Web.Public.Models
 
         public ApplicationUser(string userName) : base(userName)
         {
+        }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public User MapToDto()
+        {
+            return new User()
+            {
+                Email = Email,
+                EmailConfirmed =  EmailConfirmed,
+                FirstName = FirstName,
+                Id = Id,
+                LastName = LastName,
+                Username = UserName
+            };
         }
     }
 }

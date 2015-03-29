@@ -1,17 +1,22 @@
-﻿using System;
+﻿using Escalade.Core;
+using System;
 using Dto = Escalade.Persistence.Model;
 
 namespace Escalade.Domain.Model
 {
     public class User : Entity
     {
-        public User(string username, string firstName, string lastName, string location)
+        public User(string email, string username, string firstName, string lastName, Country country, Gender gender)
         {
             Id = Guid.NewGuid();
             Username = username;
+            NormalisedUsername = Normalise(username);
             FirstName = firstName;
             LastName = lastName;
-            Location = location;
+            Email = email;
+            NormalisedEmail = Normalise(email);
+            Country = country;
+            Gender = gender;
         }
 
         internal User(Dto.User user)
@@ -26,7 +31,8 @@ namespace Escalade.Domain.Model
             SecurityStamp = user.SecurityStamp;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            Location = user.Location;
+            Country = (Country)user.CountryId;
+            Gender = (Gender)user.GenderId;
         }
 
         public Guid Id { get; }
@@ -44,8 +50,8 @@ namespace Escalade.Domain.Model
         {
             get { return string.Format("{0} {1}", FirstName, LastName); }
         }
-        public string Location { get; private set; }
-
+        public Country Country { get; private set; }
+        public Gender Gender { get; private set; }
 
         public void UpdateUsername(string username)
         {
@@ -64,6 +70,11 @@ namespace Escalade.Domain.Model
         {
             PasswordHash = passwordHash;
             UpdateSecurityStamp();
+        }
+
+        public void UpdateCountry(Country country)
+        {
+            Country = country;
         }
 
         private void UpdateSecurityStamp()

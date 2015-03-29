@@ -1,4 +1,5 @@
-﻿using Escalade.Domain.Persistence;
+﻿using Escalade.Application.UserSession;
+using Escalade.Domain.Persistence;
 using Escalade.Persistence.Mock;
 using Escalade.Web.Public.Identity;
 using Escalade.Web.Public.Models;
@@ -30,7 +31,9 @@ namespace Escalade.Web.Public
                 .AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddUserStore<UserStore>()
                 .AddRoleStore<RoleStore>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddTransient<IUserSession, UserSession>();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

@@ -3,7 +3,7 @@ using System;
 
 namespace Escalade.Web.Public.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : AuthorisedController
     {
         [AllowAnonymous]
         [HttpGet]

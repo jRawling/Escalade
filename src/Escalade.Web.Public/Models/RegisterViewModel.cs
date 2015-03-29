@@ -1,50 +1,78 @@
-﻿using Escalade.Domain;
-using Escalade.Domain.Extentions;
-using Microsoft.AspNet.Mvc.Rendering;
-using System;
+﻿using Microsoft.AspNet.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System;
+using Escalade.Core;
 
 namespace Escalade.Web.Public.Models
 {
     public class RegisterViewModel
     {
         public RegisterViewModel()
+        { }
+
+        public ICollection<SelectListItem> Genders { get; private set; }
+
+        public ICollection<SelectListItem> Countries { get; private set; }
+
+        public RegisterUserModel User { get; set; }
+
+        public void SetDropdowns(IDictionary<int, string> countries, IDictionary<int, string> genders)
         {
-            Countries = GetCountries();
-            Genders = GetGenders();
+            Countries = GetCountyItems(countries);
+            Genders = GetGenderItems(genders);
         }
 
-        private ICollection<SelectListItem> GetCountries()
+        private ICollection<SelectListItem> GetCountyItems(IDictionary<int, string> countries)
         {
-            Collection<SelectListItem> countries = new Collection<SelectListItem>();
-            countries.Add(new SelectListItem() { Value = "", Text = "Select Your Country", Selected = true });
+            Collection<SelectListItem> countryItems = new Collection<SelectListItem>();
+            countryItems.Add(new SelectListItem() { Value = "", Text = "Select Your Country", Selected = true });
 
-            foreach (Country country in Enum.GetValues(typeof(Country)))
+            foreach (KeyValuePair<int, string> country in countries)
             {
                 SelectListItem selectListItem = new SelectListItem();
-                selectListItem.Text = country.GetName();
-                selectListItem.Value = ((int)country).ToString();
-                countries.Add(selectListItem);
+                selectListItem.Text = country.Value;
+                selectListItem.Value = country.Key.ToString();
+                countryItems.Add(selectListItem);
             }
 
-            return countries;
+            return countryItems;
         }
 
-        private ICollection<SelectListItem> GetGenders()
+        private ICollection<SelectListItem> GetGenderItems(IDictionary<int, string> genders)
         {
-            Collection<SelectListItem> genders = new Collection<SelectListItem>();
-            genders.Add(new SelectListItem() { Value = "", Text = "Select Your Gender", Selected = true });
-            genders.Add(new SelectListItem() { Value = ((int)Gender.Male).ToString(), Text = "Male"});
-            genders.Add(new SelectListItem() { Value = ((int)Gender.Female).ToString(), Text = "Female" });
-            genders.Add(new SelectListItem() { Value = ((int)Gender.Unspecified).ToString(), Text = "Don't want to say" });
-            return genders;
-        }
+            Collection<SelectListItem> genderItems = new Collection<SelectListItem>();
+            genderItems.Add(new SelectListItem() { Value = "", Text = "Select Your Gender", Selected = true });
 
+            foreach (KeyValuePair<int, string> gender in genders)
+            {
+                SelectListItem selectListItem = new SelectListItem();
+                selectListItem.Text = gender.Value;
+                selectListItem.Value = gender.Key.ToString();
+                genderItems.Add(selectListItem);
+            }
+
+            return genderItems;
+        }
+    }
+
+    public class RegisterUserModel
+    {
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }
+
+        public ApplicationUser MapToApplication()
+        {
+            return new ApplicationUser(Username)
+            {
+                Email = EmailAddress,
+                FirstName = FirstName,
+                LastName = LastName
+            };
+        }
+
         [Required]
         [Display(Name = "Email Address")]
         [DataType(DataType.EmailAddress)]
@@ -69,17 +97,9 @@ namespace Escalade.Web.Public.Models
         [Required]
         [Display(Name = "Gender")]
         public Gender SelectedGender { get; set; }
-        [Required]
-        public ICollection<SelectListItem> Genders { get; }
+
         [Required]
         [Display(Name = "Country")]
         public Country SelectedCountry { get; set; }
-        [Required]
-        public ICollection<SelectListItem> Countries { get; }
-
-        internal ApplicationUser CreateUser()
-        {
-            return new ApplicationUser(Username) { Email = EmailAddress };
-        }
     }
 }

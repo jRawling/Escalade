@@ -15,5 +15,7 @@ namespace Escalade.Persistence.Model
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
         public string Location { get; set; }
+        public int CountryId { get; set; }
+        public int GenderId { get; set; }
     }
 }
