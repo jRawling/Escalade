@@ -10,5 +10,6 @@ namespace Escalade.Domain.Persistence
         Task<User> FindByIdAsync(Guid userId);
         Task<User> FindByEmailAsync(string normalisedEmail);
         Task CreateAsync(User user);
+        Task UpdateAsync(User user);
     }
 }

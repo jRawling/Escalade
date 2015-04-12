@@ -4,7 +4,7 @@ namespace Escalade.Domain.Model
 {
     public class Entity
     {
-        protected string Normalise(string field)
+        public static string Normalise(string field)
         {
             return field.ToLowerInvariant();
         }

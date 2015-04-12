@@ -6,10 +6,10 @@
 }
 <div id="create-account">
     <div class="box">
+        <div class="logo text-center">
+            <p style="color: white;">hastilude</p>
+        </div>
         <div class="content">
-            <div class="logo text-center">
-                <p class="text-primary">Hastilude</p>
-            </div>
             @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
             {
                 @Html.AntiForgeryToken()
@@ -18,7 +18,7 @@
                 <fieldset>
                     <div id="user">
                         <div class="row">
-                            <div class="form-group col-sm-6">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-user"></span>
@@ -26,7 +26,7 @@
                                     @Html.TextBoxFor(m => m.User.Username, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.Username) })
                                 </div>
                             </div>
-                            <div class="form-group col-sm-6">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-envelope"></span>
@@ -36,39 +36,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm-6">
+                            <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <span class=" glyphicon glyphicon-lock"></span>
                                     </div>
                                     @Html.PasswordFor(m => m.User.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.Password) })
                                 </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <span class=" glyphicon glyphicon-lock"></span>
-                                    </div>
-                                    @Html.PasswordFor(m => m.User.ConfirmPassword, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.ConfirmPassword) })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile">
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                @Html.TextBoxFor(m => m.User.FirstName, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.FirstName) })
-                            </div>
-                            <div class="form-group col-sm-6">
-                                @Html.TextBoxFor(m => m.User.LastName, new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.User.LastName) })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                @Html.DropDownListFor(m => m.User.SelectedCountry, Model.Countries, new { @class = "form-control" })
-                            </div>
-                            <div class="form-group col-sm-6">
-                                @Html.DropDownListFor(m => m.User.SelectedGender, Model.Genders, new { @class = "form-control" })
                             </div>
                         </div>
                     </div>

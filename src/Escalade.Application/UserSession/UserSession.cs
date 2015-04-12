@@ -1,43 +1,92 @@
-﻿using Escalade.Core;
+﻿using Escalade.Application.UserSession.Dto;
+using Escalade.Core;
+using Escalade.Domain.Identity;
+using Escalade.Domain.Model;
+using Escalade.Domain.Model.Validation;
+using Escalade.Domain.Persistence;
+using Escalade.Gateway;
 using System;
 using System.Collections.Generic;
-using Escalade.Application.UserSession.Dto;
+using System.Linq;
 using System.Threading.Tasks;
-using Escalade.Domain.Persistence;
 
 namespace Escalade.Application.UserSession
 {
     public class UserSession : IUserSession
     {
         private readonly IUserRepository userRepository;
+        private readonly IEmailGateway emailGateway;
 
-        public UserSession(IUserRepository userRepository)
+        public UserSession(IUserRepository userRepository, IEmailGateway emailGateway)
         {
             if (userRepository == null) { throw new ArgumentNullException(nameof(userRepository)); }
+            if (emailGateway == null) { throw new ArgumentNullException(nameof(emailGateway)); }
             this.userRepository = userRepository;
+            this.emailGateway = emailGateway;
         }
 
-        public async void CreateAsync(User user)
+        public Task<RegistrationResult> RegisterLocal(CreateUserDto user)
         {
-            await userRepository.CreateAsync(user.MapToDomain());
+            throw new NotImplementedException();
         }
 
-        public async Task<User> FindByEmailAsync(string email)
+        public Task<RegistrationResult> RegisterLocal(CreateUserDto createUserDto, string passwordHash)
         {
-            var user = await userRepository.FindByEmailAsync(email.ToLowerInvariant());
-            return user == null ? null : user.MapToDto();
+            throw new NotImplementedException();
+            // var user = new User(createUserDto.Username, createUserDto.Email, passwordHash, createUserDto.FirstName, createUserDto.LastName);
+            // ValidationResult result = await new UserValidator(userRepository).ValidateAsync(user);
+
+            // if (result.Succeeded)
+            // {
+            //     await userRepository.CreateAsync(user);
+            ////     string token = Guid.NewGuid().ToString().ToUpper();
+            // //    await emailGateway.SendEmailVerification(user, token);
+            //     return RegistrationResult.Success;
+            // }
+            // else
+            // {
+            //     var errors = result.Errors.Select(e => new UserCreationError() { Code = e.Code, Description = e.Description }).ToArray();
+            //     return RegistrationResult.Failed(errors);
+            // }
         }
 
-        public async Task<User> FindByIdAsync(Guid guid)
+        public async Task<UserDto> FindByEmailAsync(string email)
         {
-            var user = await userRepository.FindByIdAsync(guid);
-            return user == null ? null : user.MapToDto();
+            var user = await userRepository.FindByEmailAsync(Entity.Normalise(email));
+            return user == null ? null : new UserDto(user);
         }
 
-        public async Task<User> FindByNameAsync(string userName)
+        public async Task<UserDto> FindByIdAsync(Guid userId)
         {
-            var user = await userRepository.FindByNameAsync(userName.ToLowerInvariant());
-            return user == null ? null : user.MapToDto();
+            var user = await userRepository.FindByIdAsync(userId);
+            return user == null ? null : new UserDto(user);
+        }
+
+        public async Task<UserDto> FindByUsernameAsync(string username)
+        {
+            var user = await userRepository.FindByNameAsync(Entity.Normalise(username));
+            return user == null ? null : new UserDto(user);
+        }
+
+        public async Task<UserDto> CreateUserTempAsync(CreateUserDto createUserDto, string passwordHash)
+        {
+            var user = new User(createUserDto.Username, createUserDto.Email, passwordHash);
+            await userRepository.CreateAsync(user);
+        //    await emailGateway.SendEmailVerification(user, emailConfirmationToken);
+            return new UserDto(await userRepository.FindByIdAsync(user.Id));
+        }
+
+        public async Task SendEmailVerificationCode(Guid userId, string confirmationToken)
+        {
+            var user = await userRepository.FindByIdAsync(userId);
+            await emailGateway.SendEmailVerificationAsync(user, confirmationToken);
+        }
+
+        public async Task ConfirmEmail(Guid userId)
+        {
+            var user = await userRepository.FindByIdAsync(userId);
+            user.ConfirmEmail();
+            await userRepository.UpdateAsync(user);
         }
 
         #region Lookup

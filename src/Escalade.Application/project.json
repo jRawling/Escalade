@@ -1,14 +1,12 @@
 ﻿{
 	"version": "1.0.0-*",
 	"dependencies": {
-		"Escalade.Domain": "1.0.0-*"
+		"Escalade.Domain": "1.0.0-*",
+		"Escalade.Domain.Model": "1.0.0-*",
+		"Escalade.Core": "1.0.0-*"
 	},
 
 	"frameworks": {
-		"aspnet50": {
-			"dependencies": {
-
-			}
-		}
+		"aspnet50": { }
 	}
 }

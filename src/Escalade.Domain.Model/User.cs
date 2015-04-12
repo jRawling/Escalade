@@ -6,17 +6,12 @@ namespace Escalade.Domain.Model
 {
     public class User : Entity
     {
-        public User(string email, string username, string firstName, string lastName, Country country, Gender gender)
+        public User(string username, string email, string passwordHash)
         {
             Id = Guid.NewGuid();
-            Username = username;
-            NormalisedUsername = Normalise(username);
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            NormalisedEmail = Normalise(email);
-            Country = country;
-            Gender = gender;
+            UpdateUsername(username);
+            UpdateEmail(email);
+            UpdatePasswordHash(passwordHash);
         }
 
         internal User(Dto.User user)
@@ -26,7 +21,7 @@ namespace Escalade.Domain.Model
             NormalisedUsername = user.NormalisedUsername;
             Email = user.Email;
             NormalisedEmail = user.NormalisedEmail;
-            EmailConfirmed = user.EmailConfirmed;
+            IsEmailConfirmed = user.IsEmailConfirmed;
             PasswordHash = user.PasswordHash;
             SecurityStamp = user.SecurityStamp;
             FirstName = user.FirstName;
@@ -40,9 +35,9 @@ namespace Escalade.Domain.Model
         public string NormalisedUsername { get; private set; }
         public string Email { get; private set; }
         public string NormalisedEmail { get; private set; }
-        public bool EmailConfirmed { get; private set; }
+        public bool IsEmailConfirmed { get; private set; }
         public string PasswordHash { get; private set; }
-        public string SecurityStamp { get; private set; }
+        public Guid SecurityStamp { get; private set; }
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -63,7 +58,12 @@ namespace Escalade.Domain.Model
         {
             Email = email;
             NormalisedEmail = Normalise(email);
-            EmailConfirmed = false;
+            IsEmailConfirmed = false;
+        }
+
+        public void ConfirmEmail()
+        {
+            IsEmailConfirmed = true;
         }
 
         public void UpdatePasswordHash(string passwordHash)
@@ -79,7 +79,7 @@ namespace Escalade.Domain.Model
 
         private void UpdateSecurityStamp()
         {
-            SecurityStamp = Guid.NewGuid().ToString();
+            SecurityStamp = Guid.NewGuid();
         }
     }
 }

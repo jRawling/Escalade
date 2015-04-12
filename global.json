@@ -1,3 +1,7 @@
-﻿{
-    "sources": [ "src", "test" ]
+{
+  "sources": [
+    "src",
+    "test",
+    "wrap"
+  ]
 }

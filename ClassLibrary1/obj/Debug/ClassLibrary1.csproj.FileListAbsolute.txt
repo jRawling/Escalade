@@ -1,0 +1,7 @@
+E:\Documents\GitHub\Escalade\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+E:\Documents\GitHub\Escalade\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+E:\Documents\GitHub\Escalade\ClassLibrary1\bin\Debug\CryptSharp.dll
+E:\Documents\GitHub\Escalade\ClassLibrary1\bin\Debug\CryptSharp.pdb
+E:\Documents\GitHub\Escalade\ClassLibrary1\obj\Debug\ClassLibrary1.csprojResolveAssemblyReference.cache
+E:\Documents\GitHub\Escalade\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+E:\Documents\GitHub\Escalade\ClassLibrary1\obj\Debug\ClassLibrary1.pdb

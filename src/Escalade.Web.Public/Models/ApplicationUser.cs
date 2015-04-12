@@ -10,11 +10,15 @@ namespace Escalade.Web.Public.Models
         public ApplicationUser()
         {  }
 
-        public ApplicationUser(User user) : base(user.Username)
+        public ApplicationUser(UserDto user) : base(user.Username)
         {
             Email = user.Email;
-            EmailConfirmed = user.EmailConfirmed;
+            EmailConfirmed = user.IsEmailConfirmed;
             Id = user.Id;
+            UserName = user.Username;
+            NormalizedEmail = user.NormalisedEmail;
+            NormalizedUserName = user.NormalisedUsername;
+            SecurityStamp = user.SecurityStamp.ToString();
         }
 
         public ApplicationUser(string userName) : base(userName)
@@ -23,18 +27,5 @@ namespace Escalade.Web.Public.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-        public User MapToDto()
-        {
-            return new User()
-            {
-                Email = Email,
-                EmailConfirmed =  EmailConfirmed,
-                FirstName = FirstName,
-                Id = Id,
-                LastName = LastName,
-                Username = UserName
-            };
-        }
     }
 }

@@ -19,11 +19,30 @@ namespace Escalade.Core
 
     public enum Gender
     {
-        [Description("Prefer not to say")]
-        Unspecified = 0,
         [Description("Male")]
-        Male = 1,
+        Male = 0,
         [Description("Female")]
-        Female = 2
+        Female = 1,
+        [Description("Prefer not to say")]
+        Unspecified = 2
+    }
+}
+
+namespace Escalade.Domain.Identity
+{
+    public enum PasswordVerificationResult
+    {
+        /// <summary>
+        ///   Password verification failed
+        /// </summary>
+        Failed = 0,
+        /// <summary>
+        ///  Success
+        /// </summary>
+        Success = 1,
+        /// <summary>
+        ///    Success but should update and rehash the password
+        /// </summary>
+        SuccessRehashNeeded = 2
     }
 }

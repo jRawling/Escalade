@@ -1,0 +1,31 @@
+        private ICollection<SelectListItem> GetCountyItems(IDictionary<int, string> countries)
+        {
+            Collection<SelectListItem> countryItems = new Collection<SelectListItem>();
+            countryItems.Add(new SelectListItem() { Value = "", Text = "Select Your Country", Selected = true });
+
+            foreach (KeyValuePair<int, string> country in countries)
+            {
+                SelectListItem selectListItem = new SelectListItem();
+                selectListItem.Text = country.Value;
+                selectListItem.Value = country.Key.ToString();
+                countryItems.Add(selectListItem);
+            }
+
+            return countryItems;
+        }
+
+        private ICollection<SelectListItem> GetGenderItems(IDictionary<int, string> genders)
+        {
+            Collection<SelectListItem> genderItems = new Collection<SelectListItem>();
+            genderItems.Add(new SelectListItem() { Value = "", Text = "Select Your Gender", Selected = true });
+
+            foreach (KeyValuePair<int, string> gender in genders)
+            {
+                SelectListItem selectListItem = new SelectListItem();
+                selectListItem.Text = gender.Value;
+                selectListItem.Value = gender.Key.ToString();
+                genderItems.Add(selectListItem);
+            }
+
+            return genderItems;
+        }

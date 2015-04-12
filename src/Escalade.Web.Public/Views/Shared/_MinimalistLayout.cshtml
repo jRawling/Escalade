@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @if (IsSectionDefined("title"))
+        {
+            RenderSection("title"); <text> | Hastilude</text>
+        }
+        else
+        {
+            <text>Beta | Hastilude</text>
+        }
+    </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/minimalist.css" />
+    <link rel="stylesheet" href="~/css/global.css" />
+</head>
+<body>
+        @RenderBody()
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+
+    <div class="container-fluid">
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+</html>

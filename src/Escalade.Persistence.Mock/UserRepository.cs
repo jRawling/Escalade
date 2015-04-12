@@ -29,7 +29,7 @@ namespace Escalade.Persistence.Mock
             user1.NormalisedEmail = user1.Email.ToLowerInvariant();
             user1.Username = "jrawling";
             user1.NormalisedUsername = user1.Username.ToLowerInvariant();
-            user1.EmailConfirmed = true;
+            user1.EmailConfirmed = false;
             user1.GenderId = (int)Gender.Male;
             user1.CountryId = (int)Country.UnitedKingdom;
         
@@ -54,11 +54,11 @@ namespace Escalade.Persistence.Mock
             return Task.FromResult(user == null ? null : user.MapToDomain());
         }
 
-        public Task CreateAsync(User user)
+        public Task<User> CreateAsync(User user)
         {
             if(user == null) { throw new ArgumentNullException(nameof(user)); }
             users.Add(user.MapToDto());
-            return Task.FromResult(0);
+            return Task.FromResult(user);
         }
 
         internal class CompareUsers : IEqualityComparer<Dto.User>

@@ -9,6 +9,11 @@ namespace Escalade.Web.Public.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                RedirectToAction("Index", "Dashboard");
+            }
+
             return View();
         }
 
@@ -16,6 +21,14 @@ namespace Escalade.Web.Public.Controllers
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [Route("terms")]
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Terms()
         {
             return View();
         }

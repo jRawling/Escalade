@@ -1,4 +1,4 @@
-﻿using Escalade.Application.UserSession;
+﻿using Escalade.Application;
 using Escalade.Application.UserSession.Dto;
 using Escalade.Web.Public.Models;
 using Microsoft.AspNet.Identity;
@@ -52,24 +52,17 @@ namespace Escalade.Web.Public.Identity
             return (Guid)Convert.ChangeType(id, typeof(Guid));
         }
 
-        private ApplicationUser CreateApplicationUser(User user)
-        {
-            if (user != null)
-            {
-                return new ApplicationUser(user);
-            }
-
-            return null;
-        }
-
         #region IUserStore
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            ThrowIfUserNull(user);
-            userSession.CreateAsync(user.MapToDto());
+            CreateUserDto createUserDto = new CreateUserDto(user.UserName, "", user.Email);
+            await userSession.CreateUserTempAsync(createUserDto, user.PasswordHash);
+            var domainUser = await userSession.FindByEmailAsync(user.Email);
+            user.Id = domainUser.Id;
+            user.SecurityStamp = domainUser.SecurityStamp.ToString();
             return IdentityResult.Success;
         }
 
@@ -82,16 +75,16 @@ namespace Escalade.Web.Public.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userSession.FindByIdAsync(ConvertIdFromString(userId));
-            return CreateApplicationUser(user);
+            var user = await userSession.FindByIdAsync(ConvertIdFromString(userId));
+            return user == null ? null : new ApplicationUser(user);
         }
 
         public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userSession.FindByNameAsync(normalizedUserName);
-            return CreateApplicationUser(user);
+            var user = await userSession.FindByUsernameAsync(normalizedUserName);
+            return user == null ? null : new ApplicationUser(user);
         }
 
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
@@ -128,7 +121,7 @@ namespace Escalade.Web.Public.Identity
         }
 
         public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken = default(CancellationToken))
-        {
+        {;
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             ThrowIfUserNull(user);
@@ -138,7 +131,8 @@ namespace Escalade.Web.Public.Identity
 
         public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            userSession.ConfirmEmail(user.Id);
+            return Task.FromResult(IdentityResult.Success);
         }
 
         public void Dispose()
@@ -231,8 +225,8 @@ namespace Escalade.Web.Public.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            User user = await userSession.FindByEmailAsync(normalizedEmail);
-            return CreateApplicationUser(user);
+            var user = await userSession.FindByEmailAsync(normalizedEmail);
+            return user == null ? null : new ApplicationUser(user);
         }
 
         public Task<string> GetNormalizedEmailAsync(ApplicationUser user, CancellationToken cancellationToken = default(CancellationToken))

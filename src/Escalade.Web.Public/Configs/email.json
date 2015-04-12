@@ -1,0 +1,5 @@
+﻿{
+	
+	"Domain": "hastilu.de",
+	"ConfirmationLink": "http://localhost:9047/confirm-email?email={0}&code={1}"
+}

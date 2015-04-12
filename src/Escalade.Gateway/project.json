@@ -1,17 +1,12 @@
 ﻿{
-    "version": "1.0.0-*",
-    "dependencies": {
-    },
+	"version": "1.0.0-*",
+	"dependencies": {
+		"Escalade.Domain.Model": "1.0.0-*",
+		"Microsoft.Framework.OptionsModel": "1.0.0-*"
+	},
 
-    "frameworks" : {
-        "aspnet50" : { 
-            "dependencies": {
-            }
-        },
-        "aspnetcore50" : { 
-            "dependencies": {
-                "System.Runtime": "4.0.20-beta-22523"
-            }
-        }
-    }
+	"frameworks": {
+		"aspnet50": {
+		}
+	}
 }

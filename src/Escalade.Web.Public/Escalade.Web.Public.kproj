@@ -15,5 +15,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <DevelopmentServerPort>9047</DevelopmentServerPort>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ClassLibrary1\ClassLibrary1.csproj" />
+    <ProjectReference Include="..\..\ClassLibrary3\ClassLibrary3.csproj" />
+    <ProjectReference Include="..\..\Escalade.Gateway\Escalade.Gateway.csproj" />
+    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Resources_2something_1resource__JSONSchema="http://json.schemastore.org/resjson" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
