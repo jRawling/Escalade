@@ -125,9 +125,35 @@ namespace Escalade.Web.Public.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("forgot-password")]
-        public ActionResult ForgotPassword(string code)
+        public ActionResult ForgotPassword()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("forgot-password")]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userSession.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Sorry, that email address is not registered with us.");
+                    return View(model);
+                }
+                else
+                {
+
+                    ApplicationUser applicationUser = new ApplicationUser(user);
+                    var code = await userManager.GeneratePasswordResetTokenAsync(applicationUser, Context.RequestAborted);
+                    await userSession.SendPasswordResetInstructions(user.Id, code);
+                    return View("ForgotPasswordConfirmation");
+                }
+            }
+
+            return View(model);
         }
 
         [Route("login")]

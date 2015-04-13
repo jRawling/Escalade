@@ -44,14 +44,16 @@ namespace Escalade.Web.Public
                 .AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddUserStore<UserStore>()
                 .AddRoleStore<RoleStore>()
-               .AddTokenProvider<EmailConfirmationTokenProvider>();
-             //   .AddDefaultTokenProviders();
+               .AddTokenProvider<EmailConfirmationTokenProvider>()
+            .AddTokenProvider<ResetPasswordTokenProvider>();
+            //   .AddDefaultTokenProviders();
             //services.AddTransient<IUserRepository, UserRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddTransient<IUserSession, UserSession>();
             services.AddTransient<IEmailGateway, MailTrapGateway>();
             services.Configure<EmailGatewayOptions>(new Configuration().AddJsonFile("Configs/email.json"));
             services.Configure<EmailConfirmationTokenProviderOptions>(new Configuration());
+            services.Configure<ResetPasswordTokenProviderOptions>(new Configuration());
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

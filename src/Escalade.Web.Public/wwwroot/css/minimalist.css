@@ -9,6 +9,10 @@
 
 body {
     background-color: #B45F06;
+    /*
+    background-image: linear-gradient(45deg, #a05506 25%, transparent 25%, transparent 75%, #a05506 75%, #a05506), linear-gradient(-45deg, #a05506 25%, transparent 25%, transparent 75%, #a05506 75%, #a05506);
+    background-size: 75px 75px;
+        */
 }
 
 h1 {
@@ -30,10 +34,10 @@ h1 {
     position: relative;
     top: 50%;
     height: 310px;
-    margin-top: -200px;
+    margin-top: -225px;
 }
 
-    .form-section form {
+    .form-section .form-content {
         width: 260px;
         margin: 0 auto;
     }

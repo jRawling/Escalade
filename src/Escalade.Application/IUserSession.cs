@@ -25,5 +25,6 @@ namespace Escalade.Application
         Task SendEmailVerificationCode(Guid userId, string confirmationToke);
 
         Task ConfirmEmail(Guid id);
+        Task SendPasswordResetInstructions(Guid id, string code);
     }
 }
